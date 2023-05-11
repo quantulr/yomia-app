@@ -10,6 +10,10 @@ export default defineConfig({
                 target: 'https://jsonplaceholder.typicode.com',
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/api/, ''),
+            }, '/dev-api': {
+                target: 'http://localhost:8080',
+                changeOrigin: true,
+                rewrite: (path) => path.replace(/^\/dev-api/, ''),
             },
         }
     }

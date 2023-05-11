@@ -14,8 +14,7 @@ import {usePosts} from "./api/posts.ts";
 // const fetcher = (url: string) => fetch(url).then(response => response.json())
 
 function App() {
-    const {posts, isLoading} = usePosts()
-
+    const {posts, isLoading, isError} = usePosts()
     return (
         <div className={"2xl:container"}>
             {/*<Login/>*/}
@@ -42,7 +41,7 @@ function App() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {isLoading ? null : posts.map((el: any) => <TableRow key={el.id}>
+                    {isLoading && !isError ? null : posts.map((el) => <TableRow key={el.id}>
                         <TableSelectionCell></TableSelectionCell>
                         <TableCell>{el.id}</TableCell>
                         <TableCell>{el.userId}</TableCell>
