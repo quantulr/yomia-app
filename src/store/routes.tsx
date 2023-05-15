@@ -7,12 +7,37 @@ import Login from "@/pages/login.tsx";
 import { devtools } from "zustand/middleware";
 import { cloneDeep } from "lodash-es";
 import { generateRouters } from "@/lib/generateRouters.tsx";
+import { ComponentType, lazy, Suspense } from "react";
+import { Spinner } from "@fluentui/react-components";
 
 interface RouteStoreType {
   routes: RouteObject[];
   setRoutes: (menuData: any) => void;
 }
 
+const pages = import.meta.glob("@/pages/**/*.tsx");
+
+// 路由懒加载
+const routerLazyLoadingFn = (
+  Element: React.LazyExoticComponent<React.ComponentType<any>>
+) => (
+  <Suspense fallback={<>loading...</>}>
+    <Element />
+  </Suspense>
+);
+
+export const loadPage = (pagePath: string) => {
+  let element;
+  for (const path in pages) {
+    const dir = path.split("pages/")[1].split(".tsx")[0];
+    if (dir === pagePath) {
+      element = routerLazyLoadingFn(
+        lazy(pages[path] as () => Promise<{ default: ComponentType<any> }>)
+      );
+    }
+  }
+  return element;
+};
 const useRoutesStore = create<RouteStoreType>()(
   devtools((set) => ({
     routes: [
@@ -37,7 +62,13 @@ const useRoutesStore = create<RouteStoreType>()(
         path: "*",
         element: (
           <RequiredAuth>
-            <div>before load route</div>
+            <div
+              className={
+                "bg-blue-100 w-screen h-screen flex justify-center items-center"
+              }
+            >
+              <Spinner />
+            </div>
           </RequiredAuth>
         ),
       },

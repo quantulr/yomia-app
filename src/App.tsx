@@ -11,15 +11,19 @@ const fetcher = (url: string) => request.get(url);
 
 function App() {
   const token = useUserStore((state) => state.token);
-  const routes = useRoutesStore((state) => state.routes);
 
+  const routes = useRoutesStore((state) => state.routes);
   const setRoutes = useRoutesStore((state) => state.setRoutes);
+
   const setMenus = useMenuStore((state) => state.setMenus);
+
   const { data: userInfoData } = useSWR(token ? "/getInfo" : null, fetcher, {
     onSuccess(data) {
+      // TODO: 存储用户信息
       console.log(data);
     },
   });
+
   const { isLoading: isRouterLoading } = useSWR(
     userInfoData ? "/getRouters" : null,
     fetcher,
@@ -34,7 +38,11 @@ function App() {
   return (
     <>
       {isRouterLoading ? (
-        <div>
+        <div
+          className={
+            "bg-blue-100 w-screen h-screen flex justify-center items-center"
+          }
+        >
           <Spinner />
         </div>
       ) : (

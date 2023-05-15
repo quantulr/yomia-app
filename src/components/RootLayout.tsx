@@ -46,12 +46,20 @@ const SideMenuItem = ({ menu, path }: { menu: MenuData; path?: string }) => {
 };
 
 const RootLayout = () => {
+  const navigate = useNavigate();
   const menus = useMenuStore((state) => state.menus);
   return (
     <div className={"h-screen w-screen flex"}>
       <ProSidebarProvider>
         <Sidebar>
           <Menu>
+            <MenuItem
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              首页
+            </MenuItem>
             {menus.map((el) => (
               <SideMenuItem key={el.path} menu={el} />
             ))}

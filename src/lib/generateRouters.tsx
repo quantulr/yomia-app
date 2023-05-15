@@ -1,5 +1,6 @@
 import { MenuData } from "@/types/router";
 import { RouteObject } from "react-router-dom";
+import { loadPage } from "@/store/routes.tsx";
 
 export const generateRouters = (routerDatas: MenuData[]): RouteObject[] => {
   const _routes = flatRoutesPath(routerDatas);
@@ -23,7 +24,8 @@ const flatRoutesPath = (paths: MenuData[], parentPath = "") =>
     if (item.children) {
       result.push(...flatRoutesPath(item.children, path));
     } else {
-      result.push({ path: path, element: <div>{path.slice(1)}</div> });
+      // @ts-ignore
+      result.push({ path: path, element: loadPage(item.component) });
     }
     return result;
   }, []);

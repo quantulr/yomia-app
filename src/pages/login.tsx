@@ -8,8 +8,8 @@ import {
   Input,
 } from "@fluentui/react-components";
 import useSWR from "swr";
-import request from "../lib/request.ts";
-import useUserStore from "../store/user.tsx";
+import request from "@/lib/request.ts";
+import useUserStore from "@/store/user.tsx";
 
 const fetcher = (url: string) =>
   request.get<never, { img: string; uuid: string }>(url);
@@ -62,7 +62,7 @@ const Login = () => {
         <form onReset={formik.handleReset} onSubmit={formik.handleSubmit}>
           <Field
             required
-            label={"username"}
+            label={"用户名"}
             validationMessage={formik.errors.username}
             validationState={
               formik.getFieldMeta("username").touched &&
@@ -81,7 +81,7 @@ const Login = () => {
           </Field>
           <Field
             required
-            label={"password"}
+            label={"密码"}
             className={"mt-2"}
             validationMessage={formik.errors.password}
             validationState={
@@ -99,7 +99,7 @@ const Login = () => {
               onChange={formik.handleChange}
             />
           </Field>
-          <Field required label={"captcha"} className={"mt-2"}>
+          <Field required label={"验证码"} className={"mt-2"}>
             <div className={"flex justify-between items-center"}>
               <Input
                 name={"code"}
