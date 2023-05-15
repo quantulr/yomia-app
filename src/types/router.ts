@@ -12,7 +12,7 @@ export interface MenuData {
   component: string;
   alwaysShow?: boolean;
   meta: Meta;
-  children?: Children[];
+  children?: MenuData[];
 }
 
 export interface Meta {
@@ -20,15 +20,4 @@ export interface Meta {
   icon: string;
   noCache: boolean;
   link?: string;
-}
-
-export interface Children {
-  name: string;
-  path: string;
-  hidden: boolean;
-  component: string;
-  meta: Meta;
-  redirect?: string;
-  alwaysShow?: boolean;
-  children?: Children[];
 }
