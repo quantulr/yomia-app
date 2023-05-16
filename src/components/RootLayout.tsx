@@ -8,6 +8,7 @@ import {
 } from "react-pro-sidebar";
 import useMenuStore from "@/store/menu.tsx";
 import { MenuData } from "@/types/router.ts";
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 
 const SideMenuItem = ({ menu, path }: { menu: MenuData; path?: string }) => {
   const navigate = useNavigate();
@@ -52,21 +53,37 @@ const RootLayout = () => {
     <div className={"h-screen w-screen flex"}>
       <ProSidebarProvider>
         <Sidebar>
-          <Menu>
-            <MenuItem
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              首页
-            </MenuItem>
-            {menus.map((el) => (
-              <SideMenuItem key={el.path} menu={el} />
-            ))}
-          </Menu>
+          <OverlayScrollbarsComponent
+            style={{ height: "100vh" }}
+            options={{
+              scrollbars: { theme: "os-theme-dark", autoHide: "leave" },
+            }}
+            defer
+          >
+            <Menu>
+              <MenuItem
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                首页
+              </MenuItem>
+              {menus.map((el) => (
+                <SideMenuItem key={el.path} menu={el} />
+              ))}
+            </Menu>
+          </OverlayScrollbarsComponent>
         </Sidebar>
         <main className={"w-full"}>
-          <Outlet />
+          <OverlayScrollbarsComponent
+            style={{ height: "100vh", padding: "20px" }}
+            options={{
+              scrollbars: { theme: "os-theme-dark", autoHide: "leave" },
+            }}
+            defer
+          >
+            <Outlet />
+          </OverlayScrollbarsComponent>
         </main>
       </ProSidebarProvider>
     </div>
