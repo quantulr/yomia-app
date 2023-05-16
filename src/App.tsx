@@ -9,6 +9,7 @@ import useMenuStore from "@/store/menu.tsx";
 import Loading from "@/components/Loading.tsx";
 import {useState} from "react";
 import Error from "@/components/Error.tsx";
+import {RyResponse} from "@/types/response.ts";
 
 const fetcher = (url: string) => request.get(url);
 
@@ -24,13 +25,13 @@ function App() {
 
     const {data: userInfoData, error: userInfoError} = useSWR(
         token ? "/getInfo" : null,
-        (url: string) => request.get(url),
+        (url: string) => request.get<never, RyResponse<any>>(url),
         {
             onSuccess(data) {
                 // TODO: 存储用户信息
                 console.log(data);
             },
-            revalidateOnFocus: false
+            revalidateOnFocus: false,
         }
     );
 
@@ -43,7 +44,7 @@ function App() {
                 setMenus(data.data);
                 setIsRouteLoaded(() => true);
             },
-            revalidateOnFocus: false
+            revalidateOnFocus: false,
         }
     );
     /*没有token, 直接返回初始的router provider*/

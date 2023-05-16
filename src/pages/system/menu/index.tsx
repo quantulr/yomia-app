@@ -17,16 +17,15 @@ import {MenuItem} from "@/types/menu.ts";
 import {cloneDeep} from "lodash-es";
 
 const Menu = () => {
-    const [renderMenuList, setRenderMenuList] = useState<MenuItem[]>([])
+    const [renderMenuList, setRenderMenuList] = useState<MenuItem[]>([]);
     const {isLoading} = useMenus({
         onSuccess: (data) => {
-            console.log(data)
             if (!data.data) {
-                return setRenderMenuList(() => [])
+                return setRenderMenuList(() => []);
             }
-            const menuTree = buildMenuTree(data.data)
-            setRenderMenuList(() => menuTree)
-        }
+            const menuTree = buildMenuTree(data.data);
+            setRenderMenuList(() => menuTree);
+        },
     });
     return (
         <>
@@ -49,29 +48,46 @@ const Menu = () => {
                                 <TableCell>
                                     <TableCellLayout>
                                         <div className={"flex items-center"}>
-                                            {!!menuItem.treeLevel && [...Array(menuItem.treeLevel).keys()].map(el =>
-                                                <div
-                                                    key={el}
-                                                    className={'w-8'}></div>)}{menuItem.children.length > 0 && (
-                                            renderMenuList[menuIndex + 1].parentId === menuItem.menuId ?
-                                                // 折叠按钮
-                                                <Icon onClick={() => {
-                                                    setRenderMenuList(prevState => {
-                                                        const result = cloneDeep(prevState);
-                                                        result.splice(menuIndex + 1, menuItem.children.length)
-                                                        return result
-                                                    })
-                                                }} className={'mr-2'} as={<FcExpand/>}/> :
-                                                // 展开按钮
-                                                <Icon className={'mr-2'} onClick={() => {
-                                                    setRenderMenuList(prevState => {
-                                                        const result = cloneDeep(prevState);
-                                                        result.splice(menuIndex + 1, 0, ...menuItem.children)
-                                                        return result
-                                                    })
-                                                }} as={<FcCollapse/>}/>
-
-                                        )}
+                                            {!!menuItem.treeLevel &&
+                                                [...Array(menuItem.treeLevel).keys()].map((el) => (
+                                                    <div key={el} className={"w-8"}></div>
+                                                ))}
+                                            {menuItem.children.length > 0 &&
+                                                (renderMenuList[menuIndex + 1].parentId ===
+                                                menuItem.menuId ? (
+                                                    // 折叠按钮
+                                                    <Icon
+                                                        onClick={() => {
+                                                            setRenderMenuList((prevState) => {
+                                                                const result = cloneDeep(prevState);
+                                                                result.splice(
+                                                                    menuIndex + 1,
+                                                                    menuItem.children.length
+                                                                );
+                                                                return result;
+                                                            });
+                                                        }}
+                                                        className={"mr-2"}
+                                                        as={<FcExpand/>}
+                                                    />
+                                                ) : (
+                                                    // 展开按钮
+                                                    <Icon
+                                                        className={"mr-2"}
+                                                        onClick={() => {
+                                                            setRenderMenuList((prevState) => {
+                                                                const result = cloneDeep(prevState);
+                                                                result.splice(
+                                                                    menuIndex + 1,
+                                                                    0,
+                                                                    ...menuItem.children
+                                                                );
+                                                                return result;
+                                                            });
+                                                        }}
+                                                        as={<FcCollapse/>}
+                                                    />
+                                                ))}
                                             <span>{menuItem.menuName}</span>
                                         </div>
                                     </TableCellLayout>
