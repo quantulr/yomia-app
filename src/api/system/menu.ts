@@ -4,8 +4,10 @@ import { RyResponse } from "@/types/response.ts";
 import { MenuItem } from "@/types/menu.ts";
 
 export const useMenus = ({
+  rootId,
   onSuccess,
 }: {
+  rootId?: number;
   onSuccess?: (data: RyResponse<MenuItem[]>) => void;
 }): {
   menus?: RyResponse<MenuItem[]>;
@@ -14,10 +16,14 @@ export const useMenus = ({
 } => {
   const fetcher = (url: string) =>
     request.get<never, RyResponse<MenuItem[]>>(url);
-  const { data, isLoading, error } = useSWR("/system/menu/list", fetcher, {
-    onSuccess,
-    revalidateOnFocus: false,
-  });
+  const { data, isLoading, error } = useSWR(
+    rootId ? `/system/menu/list` : "/system/menu/list",
+    fetcher,
+    {
+      onSuccess,
+      revalidateOnFocus: false,
+    }
+  );
   return {
     menus: data,
     isLoading,

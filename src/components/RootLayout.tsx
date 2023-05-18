@@ -9,14 +9,28 @@ import {
 import useMenuStore from "@/store/menu.tsx";
 import { MenuData } from "@/types/router.ts";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
+import NavigationBar from "@/components/NavigationBar.tsx";
+import { FcHome } from "react-icons/fc";
 
-const SideMenuItem = ({ menu, path }: { menu: MenuData; path?: string }) => {
+const SideMenuItem = ({
+  menu,
+  path,
+  intend = 0,
+}: {
+  menu: MenuData;
+  path?: string;
+  intend?: number;
+}) => {
   const navigate = useNavigate();
   if (menu.children) {
     return (
-      <SubMenu label={menu.meta.title}>
+      <SubMenu
+        rootStyles={{ paddingLeft: `${20 * intend}px` }}
+        label={menu.meta.title}
+      >
         {menu.children.map((el) => (
           <SideMenuItem
+            intend={intend + 1}
             path={path ? `${path}/${el.path}` : `${menu.path}/${el.path}`}
             menu={el}
             key={el.path}
@@ -27,6 +41,7 @@ const SideMenuItem = ({ menu, path }: { menu: MenuData; path?: string }) => {
   } else {
     return (
       <MenuItem
+        rootStyles={{ paddingLeft: `${20 * intend}px` }}
         onClick={() => {
           console.log(path ? path : menu.path);
           const route_path = path ? path : menu.path;
@@ -52,7 +67,7 @@ const RootLayout = () => {
   return (
     <div className={"h-screen w-screen flex"}>
       <ProSidebarProvider>
-        <Sidebar>
+        <Sidebar className={"shadow-md"}>
           <OverlayScrollbarsComponent
             style={{ height: "100vh" }}
             options={{
@@ -60,8 +75,19 @@ const RootLayout = () => {
             }}
             defer
           >
-            <Menu>
+            {/*<div className={'h-8 flex'}></div>*/}
+            <Menu
+              menuItemStyles={{
+                button: ({ level, isSubmenu }) => {
+                  console.log(level, isSubmenu);
+                  return {
+                    backgroundColor: isSubmenu ? "#fbfbfb" : undefined,
+                  };
+                },
+              }}
+            >
               <MenuItem
+                icon={<FcHome />}
                 onClick={() => {
                   navigate("/");
                 }}
@@ -75,8 +101,9 @@ const RootLayout = () => {
           </OverlayScrollbarsComponent>
         </Sidebar>
         <main className={"w-full"}>
+          <NavigationBar></NavigationBar>
           <OverlayScrollbarsComponent
-            style={{ height: "100vh", padding: "20px" }}
+            style={{ height: "calc(100vh - 40px)", padding: "20px" }}
             options={{
               scrollbars: { theme: "os-theme-dark", autoHide: "leave" },
             }}

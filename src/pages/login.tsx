@@ -24,8 +24,8 @@ const validate = (
     errors.username = "Required";
   }
   /*else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.username)) {
-        errors.username = 'Invalid email address';
-    }*/
+          errors.username = 'Invalid email address';
+      }*/
   if (!values.password) {
     errors.password = "Required";
   }
@@ -48,9 +48,16 @@ const Login = () => {
     },
     validate: validate,
     onSubmit: async (values, { setSubmitting }) => {
-      console.log(values);
-      await login(values);
-      setSubmitting(false);
+      login(values)
+        .then(() => {
+          //TODO:
+        })
+        .catch(() => {
+          mutate();
+        })
+        .finally(() => {
+          setSubmitting(false);
+        });
     },
   });
   return (
