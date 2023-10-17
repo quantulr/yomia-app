@@ -10,7 +10,7 @@ import {
 } from "@fluentui/react-components";
 import { useState } from "react";
 import Icon from "@/components/Icon.tsx";
-import { FcCollapse, FcExpand } from "react-icons/all";
+import { FcCollapse, FcExpand } from "react-icons/fc";
 import { MenuItem } from "@/types/menu.ts";
 import { cloneDeep } from "lodash-es";
 import useSWR, { Fetcher } from "swr";

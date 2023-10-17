@@ -6,7 +6,9 @@ import {
   MenuTrigger,
 } from "@fluentui/react-components";
 import Icon from "@/components/Icon.tsx";
-import { BiColumns, IoLogOutOutline } from "react-icons/all";
+import { BiColumns } from "react-icons/bi";
+import { IoLogOutOutline } from "react-icons/io5";
+
 import useUserStore from "@/store/user.tsx";
 
 const NavigationBar = () => {
